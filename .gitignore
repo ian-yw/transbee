@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.DS_Store
+# 실제 녹음·축어록 (공개 금지)
+private-data/
+.env*
+spikes/**/models/
+spikes/**/vendor/
+*.log
+.playwright-mcp/

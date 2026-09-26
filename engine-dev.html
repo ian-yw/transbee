@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>transbee 엔진 검증</title>
+    <style>
+      body { font: 14px/1.5 system-ui, sans-serif; margin: 16px; background: #fff; color: #111; }
+      pre { background: #f4f4f4; padding: 8px; max-height: 40vh; overflow: auto; white-space: pre-wrap; }
+    </style>
+  </head>
+  <body>
+    <h1>초벌 엔진 검증 (개발용)</h1>
+    <p>
+      <input id="file" type="file" accept="audio/*,video/webm" />
+      <label>입력 <select id="asrInput"><option value="window">30초 구간 + 단어 시각</option><option value="turn">화자 turn 단위</option></select></label>
+      <label>장치 <select id="device"><option value="">자동</option><option value="webgpu">webgpu</option><option value="webgpu-f32">webgpu-f32</option><option value="wasm">wasm</option></select></label>
+      <button id="prepare">모델 받기</button>
+      <button id="run">돌리기</button>
+      <button id="cancel">멈추기</button>
+    </p>
+    <pre id="log"></pre>
+    <pre id="out"></pre>
+    <script type="module" src="/src/engine/dev.ts"></script>
+  </body>
+</html>

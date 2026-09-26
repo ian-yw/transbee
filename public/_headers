@@ -1,0 +1,15 @@
+# Cloudflare Pages 헤더(vercel.json과 같은 내용).
+# COOP·COEP: WASM 다중 스레드(SharedArrayBuffer)에 필요한 교차 출처 격리. credentialless라 Hugging Face 모델(CORS)을 그대로 받는다.
+# .wasm(application/wasm)·.webmanifest는 Cloudflare 기본 형식이 맞아 따로 적지 않는다(같은 헤더를 두 규칙에 쓰면 값이 쉼표로 합쳐진다).
+/*
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Embedder-Policy: credentialless
+  X-Content-Type-Options: nosniff
+
+# 이름에 내용 해시가 붙은 파일은 바뀌지 않는다
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# 새 버전 확인은 이 파일로 하므로 매번 서버에 묻는다
+/sw.js
+  Cache-Control: no-cache

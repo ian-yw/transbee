@@ -1,0 +1,34 @@
+{
+  "name": "transbee",
+  "private": true,
+  "version": "0.3.14",
+  "license": "AGPL-3.0-only",
+  "repository": "github:ian-yw/transbee",
+  "homepage": "https://transbee.beevelop.ai",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "oxlint",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@huggingface/transformers": "^4.3.0",
+    "fflate": "^0.8.3",
+    "mediabunny": "^1.59.1",
+    "onnxruntime-web": "^1.31.0-dev.20260914-8d85527a0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "devDependencies": {
+    "@types/node": "^24.13.3",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.7",
+    "@vitejs/plugin-react": "^6.1.1",
+    "oxlint": "^1.81.0",
+    "playwright-core": "^1.63.0",
+    "typescript": "~6.0.2",
+    "vite": "^8.3.0",
+    "vitest": "^4.1.11"
+  }
+}

@@ -1,0 +1,266 @@
+{
+  "formatVersion": 1,
+  "title": "예시 상담 (가상)",
+  "createdAt": "2026-09-24T14:21:04.697Z",
+  "updatedAt": "2026-09-24T14:21:04.697Z",
+  "audio": {
+    "fileName": "demo-counseling.m4a",
+    "mime": "audio/mp4",
+    "duration": 98.23
+  },
+  "speakers": {
+    "roles": [
+      "counselor",
+      "client"
+    ]
+  },
+  "utterances": [
+    {
+      "id": "u001",
+      "speaker": 0,
+      "modelSpeaker": 0,
+      "start": 0.5,
+      "end": 4.5,
+      "text": "네, 오늘은 지난주에 하신 검사 결과를 같이 보려고 해요.",
+      "review": "draft"
+    },
+    {
+      "id": "u002",
+      "speaker": 1,
+      "modelSpeaker": 1,
+      "start": 5.2,
+      "end": 6.32,
+      "text": "아 네.. 음..",
+      "review": "draft"
+    },
+    {
+      "id": "u003",
+      "speaker": 0,
+      "modelSpeaker": 0,
+      "start": 7.02,
+      "end": 11.25,
+      "text": "그 전에, 한 주 어떻게 지내셨는지 먼저 여쭤볼게요.",
+      "review": "draft"
+    },
+    {
+      "id": "u004",
+      "speaker": 1,
+      "modelSpeaker": 1,
+      "start": 11.95,
+      "end": 15.72,
+      "text": "음.. 그냥 비슷했어요. 회사 일이 좀 많았고요.",
+      "review": "draft"
+    },
+    {
+      "id": "u005",
+      "speaker": 0,
+      "modelSpeaker": 0,
+      "start": 16.42,
+      "end": 17.72,
+      "text": "일이 많으셨군요.",
+      "review": "draft"
+    },
+    {
+      "id": "u006",
+      "speaker": 1,
+      "modelSpeaker": 1,
+      "start": 18.42,
+      "end": 20.75,
+      "text": "네. 야근을 거의 매일 했어요.",
+      "review": "draft"
+    },
+    {
+      "id": "u007",
+      "speaker": 0,
+      "modelSpeaker": 0,
+      "start": 21.45,
+      "end": 23.88,
+      "text": "그러셨구나. 몸은 좀 어떠세요?",
+      "review": "draft"
+    },
+    {
+      "id": "u008",
+      "speaker": 1,
+      "modelSpeaker": 1,
+      "start": 24.58,
+      "end": 26.95,
+      "text": "어.. 솔직히 좀 지쳤어요.",
+      "review": "draft"
+    },
+    {
+      "id": "u009",
+      "speaker": 0,
+      "modelSpeaker": 0,
+      "start": 27.65,
+      "end": 33.13,
+      "text": "그럼 검사 결과를 같이 볼 건데요, 음.. 먼저 해 보시니까 어떠셨어요?",
+      "review": "draft"
+    },
+    {
+      "id": "u010",
+      "speaker": 1,
+      "modelSpeaker": 1,
+      "start": 33.83,
+      "end": 37.9,
+      "text": "어.. 솔직히 좀 긴장됐어요. 문항이 너무 많아서..",
+      "review": "draft"
+    },
+    {
+      "id": "u011",
+      "speaker": 0,
+      "modelSpeaker": 0,
+      "start": 38.6,
+      "end": 40.21,
+      "text": "아, 많으셨죠.",
+      "review": "draft"
+    },
+    {
+      "id": "u012",
+      "speaker": 1,
+      "modelSpeaker": 1,
+      "start": 40.91,
+      "end": 45.66,
+      "text": "네, 그리고 그.. 제가 이렇게 나올까 봐 좀 무서웠던 것 같아요.",
+      "review": "draft"
+    },
+    {
+      "id": "u013",
+      "speaker": 0,
+      "modelSpeaker": 0,
+      "start": 46.36,
+      "end": 47.95,
+      "text": "어떻게 나올까 봐요?",
+      "review": "draft"
+    },
+    {
+      "id": "u014",
+      "speaker": 1,
+      "modelSpeaker": 1,
+      "start": 51.95,
+      "end": 55.46,
+      "text": "음.. 제가 좀 이상한 사람으로 나올까 봐요.",
+      "review": "draft"
+    },
+    {
+      "id": "u015",
+      "speaker": 0,
+      "modelSpeaker": 0,
+      "start": 56.16,
+      "end": 59.38,
+      "text": "이상한 사람으로 나올까 봐 걱정되셨군요.",
+      "review": "draft"
+    },
+    {
+      "id": "u016",
+      "speaker": 1,
+      "modelSpeaker": 1,
+      "start": 60.08,
+      "end": 64.29,
+      "text": "네.. 그런 거 있잖아요. 뭔가 잘못된 사람처럼요.",
+      "review": "draft"
+    },
+    {
+      "id": "u017",
+      "speaker": 0,
+      "modelSpeaker": 0,
+      "start": 64.99,
+      "end": 70.8,
+      "text": "그 마음이 드는 게 자연스러워요. 결과를 보면, 요즘 많이 지쳐 계시다는 게 보여요.",
+      "review": "draft"
+    },
+    {
+      "id": "u018",
+      "speaker": 1,
+      "modelSpeaker": 1,
+      "start": 71.5,
+      "end": 74.67,
+      "text": "아.. 네. 그건.. 맞는 것 같아요.",
+      "review": "draft"
+    },
+    {
+      "id": "u019",
+      "speaker": 0,
+      "modelSpeaker": 0,
+      "start": 75.37,
+      "end": 78.14,
+      "text": "어떤 때 가장 지친다고 느끼세요?",
+      "review": "draft"
+    },
+    {
+      "id": "u020",
+      "speaker": 1,
+      "modelSpeaker": 1,
+      "start": 81.14,
+      "end": 83.73,
+      "text": "퇴근하고.. 집에 들어가기 전에요.",
+      "review": "draft"
+    },
+    {
+      "id": "u021",
+      "speaker": 0,
+      "modelSpeaker": 0,
+      "start": 84.43,
+      "end": 85.9,
+      "text": "집에 들어가기 전에.",
+      "review": "draft"
+    },
+    {
+      "id": "u022",
+      "speaker": 1,
+      "modelSpeaker": 1,
+      "start": 86.6,
+      "end": 89.85,
+      "text": "네. 문 앞에서 한참 서 있을 때가 있어요.",
+      "review": "draft"
+    },
+    {
+      "id": "u023",
+      "speaker": 0,
+      "modelSpeaker": 0,
+      "start": 90.55,
+      "end": 94.68,
+      "text": "문 앞에서 한참 서 계시는군요. 그때 마음이 어떠세요?",
+      "review": "draft"
+    },
+    {
+      "id": "u024",
+      "speaker": 1,
+      "modelSpeaker": 1,
+      "start": 95.38,
+      "end": 98.23,
+      "text": "음.. 그냥.. 아무것도 하기 싫어요.",
+      "review": "draft"
+    }
+  ],
+  "sections": [
+    {
+      "id": "s1",
+      "title": "상담 시작",
+      "beforeUtteranceId": "u001"
+    },
+    {
+      "id": "s2",
+      "title": "검사 결과 보기 전",
+      "beforeUtteranceId": "u009"
+    },
+    {
+      "id": "s3",
+      "title": "검사 결과 보기",
+      "beforeUtteranceId": "u017"
+    }
+  ],
+  "model": {
+    "asr": "gold",
+    "diarization": "gold",
+    "vad": "gold",
+    "app": "make-demo"
+  },
+  "processing": {
+    "status": "done",
+    "processedUntil": 98.23
+  },
+  "settings": {
+    "silenceMin": 3,
+    "silenceFormat": "full"
+  }
+}

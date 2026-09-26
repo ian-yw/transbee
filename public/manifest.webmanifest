@@ -1,0 +1,15 @@
+{
+  "name": "transbee — 상담 축어록",
+  "short_name": "transbee",
+  "description": "상담 녹음을 사례보고서용 축어록으로. 녹음은 이 컴퓨터 밖으로 나가지 않아요.",
+  "lang": "ko",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#efece6",
+  "theme_color": "#efece6",
+  "icons": [
+    { "src": "/brand/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/brand/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}
