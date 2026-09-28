@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { setSettings, useSettings, type Settings } from './settings'
 import { KAKAO_URL } from './Legal'
+import { beforeUpdate, updating, useUpdateHeld } from './update'
 
 export function Logo({ onClick }: { onClick?: () => void }) {
   const inner = (
@@ -102,27 +103,77 @@ export function Cheer({ hand, sub, action, onAction, inline }: { hand: ReactNode
   )
 }
 
-/** 새 버전을 뒤에서 받아 두었으면 한 줄 알림. 창을 모두 닫고 다시 열 때 바뀐다(src/sw.js). */
-export function UpdateNote() {
-  const [ready, setReady] = useState(false)
+/**
+ * 새 버전 안내(src/sw.js). 창을 켜 둔 채여도 30분마다·창으로 돌아올 때 새 버전을 찾는다.
+ * 받아 두면 [지금 업데이트] → 저장을 끝내고 새 버전을 켠 뒤 새로고침. 모델을 받거나 받아 적는 동안은 끝난 뒤에.
+ * 다른 창에서 새 버전을 켰으면 이 창은 멋대로 새로고침하지 않고 [새로고침]을 보여 준다.
+ */
+export function UpdateBar() {
+  const [st, setSt] = useState<'none' | 'waiting' | 'switched'>('none')
+  const [closed, setClosed] = useState(false)
+  const held = useUpdateHeld()
+  const reg = useRef<ServiceWorkerRegistration | undefined>(undefined)
   useEffect(() => {
-    navigator.serviceWorker?.getRegistration().then((r) => {
+    const sw = navigator.serviceWorker
+    if (!sw) return
+    let timer = 0
+    let last = Date.now()
+    const look = () => {
+      if (document.visibilityState !== 'visible' || Date.now() - last < 5 * 60e3) return
+      last = Date.now()
+      reg.current?.update().catch(() => {})
+    }
+    sw.getRegistration().then((r) => {
       if (!r) return
-      const check = () => setReady(!!r.waiting && !!navigator.serviceWorker.controller)
+      reg.current = r
+      // 처음 여는 사람(controller 없음)에게는 띄우지 않는다
+      const check = () => r.waiting && sw.controller && setSt((s) => (s === 'switched' ? s : 'waiting'))
       const watch = () => r.installing?.addEventListener('statechange', check)
       check()
       watch()
       r.addEventListener('updatefound', watch)
+      timer = window.setInterval(() => r.update().catch(() => {}), 30 * 60e3)
     })
+    const onChange = () => {
+      if (updating.now) return location.reload()
+      setSt('switched')
+      setClosed(false)
+    }
+    sw.addEventListener('controllerchange', onChange)
+    document.addEventListener('visibilitychange', look)
+    return () => {
+      clearInterval(timer)
+      sw.removeEventListener('controllerchange', onChange)
+      document.removeEventListener('visibilitychange', look)
+    }
   }, [])
-  return ready ? (
-    <p className="update-note" role="status">
-      새 버전이 있어요. 창을 닫고 다시 열면 적용돼요.
-      <button type="button" className="x" aria-label="알림 닫기" onClick={() => setReady(false)}>
+
+  const apply = async () => {
+    updating.now = true
+    await Promise.allSettled([...beforeUpdate].map((f) => f()))
+    const w = reg.current?.waiting
+    if (st === 'waiting' && w) w.postMessage('skip-waiting') // 켜지면 controllerchange → 새로고침
+    else location.reload()
+  }
+
+  if (st === 'none' || closed) return null
+  const msg = st === 'waiting' ? '새 버전이 있어요.' : '다른 창에서 새 버전으로 바꿨어요.'
+  return (
+    <p className="update-bar" role="status">
+      <span>
+        {msg}
+        {held && ' 지금 하는 작업이 끝나면 바꿀 수 있어요.'}
+      </span>
+      {!held && (
+        <button type="button" className="btn pri sm" onClick={apply}>
+          {st === 'waiting' ? '지금 업데이트' : '새로고침'}
+        </button>
+      )}
+      <button type="button" className="x" aria-label="알림 닫기" onClick={() => setClosed(true)}>
         ×
       </button>
     </p>
-  ) : null
+  )
 }
 
 /** "이럴 때는" 화면: 제목 한 줄 + 설명 한 줄 + 버튼 하나 */

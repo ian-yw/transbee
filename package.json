@@ -1,7 +1,7 @@
 {
   "name": "transbee",
   "private": true,
-  "version": "0.3.15",
+  "version": "0.3.16",
   "license": "AGPL-3.0-only",
   "repository": "github:ian-yw/transbee",
   "homepage": "https://transbee.beevelop.ai",

@@ -6,6 +6,7 @@ import { utteranceLabels } from '../labels'
 import { putJob, type Job } from '../storage/db'
 import { engine } from './engine'
 import { Cheer, Logo, durText, etaText } from './ui'
+import { useHoldUpdate } from './update'
 
 function stageText(p?: Progress): string {
   if (!p) return '받아 적기를 시작하고 있어요'
@@ -31,6 +32,7 @@ export function Processing(props: {
   const [t, setT] = useState<Transcript>(job.transcript)
   const cbs = useRef(props)
   cbs.current = props
+  useHoldUpdate() // 받아 적는 동안은 새 버전 적용을 미룬다
 
   useEffect(() => {
     let latest = job

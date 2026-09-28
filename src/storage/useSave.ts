@@ -4,6 +4,7 @@ import type { Transcript } from '../types'
 import { putJob, type Job } from './db'
 import { mainFileName, pack, readHead, readId, safeName, tempFileName } from './file'
 import { canPickFolder, getFolder, hasPermission, pickFolder, readFile, removeFile, writeFile } from './folder'
+import { beforeUpdate, updating } from '../app/update'
 
 export type SaveResult = 'folder' | 'download' | 'cancel' | 'error' | 'newer' | 'gone'
 
@@ -64,6 +65,10 @@ export function useSave(job: Job, t: Transcript, audio: Blob) {
     return () => clearTimeout(id)
   }, [t, persist])
   useEffect(() => () => void persist(), [persist])
+  useEffect(() => {
+    beforeUpdate.add(persist)
+    return () => void beforeUpdate.delete(persist)
+  }, [persist])
 
   useEffect(() => {
     getFolder().then(async (d) => d && setSt((s) => ({ ...s, folder: d.name })))
@@ -159,6 +164,7 @@ export function useSave(job: Job, t: Transcript, audio: Blob) {
     if (!dirty) return
     const warn = (e: BeforeUnloadEvent) => {
       persist()
+      if (updating.now) return // 새 버전으로 바꾸는 새로고침: 브라우저 저장은 끝냈고, 파일 저장 필요 표시는 그대로 남는다
       e.preventDefault()
       e.returnValue = ''
     }

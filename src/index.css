@@ -249,8 +249,7 @@ html { scroll-padding-top: var(--head-h, 200px); scroll-padding-bottom: 80px; }
 .fmenu .btn { justify-content: flex-start; }
 .topbar > .pop-wrap + .pop-wrap { margin-left: 0; }
 .hint { position: absolute; right: 0; top: calc(100% + 6px); width: 280px; background: var(--paper); border: 1px solid var(--rule); border-radius: 10px; padding: 10px 12px; font-size: 13px; box-shadow: var(--shadow); z-index: 20; }
-.update-note { position: fixed; left: 16px; bottom: 96px; z-index: 30; margin: 0; max-width: min(240px, calc(100% - 32px)); background: var(--paper); color: var(--t); border: 1px solid var(--rule); border-radius: 10px; padding: 10px 30px 10px 14px; font-size: 14px; box-shadow: var(--shadow); }
-.update-note .x { position: absolute; right: 4px; top: 4px; }
+.update-bar { position: fixed; top: 64px; left: 50%; transform: translateX(-50%); z-index: 40; margin: 0; display: flex; align-items: center; gap: 10px; width: max-content; max-width: calc(100% - 32px); background: var(--paper); color: var(--t); border: 1px solid var(--rule); border-radius: 10px; padding: 8px 6px 8px 16px; font-size: 14px; box-shadow: var(--shadow); }
 
 /* ---------- 카드·이럴 때는 ---------- */
 .center { min-height: calc(100vh - 70px); display: grid; place-items: center; padding: 24px 16px; }

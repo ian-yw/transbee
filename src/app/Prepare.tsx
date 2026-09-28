@@ -4,6 +4,7 @@ import type { EngineError, Progress } from '../engine/api'
 import { canPickFolder, getFolder, pickFolder } from '../storage/folder'
 import { engine } from './engine'
 import { Logo, etaText, mbText } from './ui'
+import { useHoldUpdate } from './update'
 
 export function FolderPick({ compact }: { compact?: boolean }) {
   const [name, setName] = useState<string>()
@@ -50,6 +51,7 @@ export function FolderPick({ compact }: { compact?: boolean }) {
 export function Prepare({ title, bytes, updating, onDone, onError, onHome }: { title: string; bytes?: number; updating?: boolean; onDone: () => void; onError: (e: EngineError) => void; onHome: () => void }) {
   const [p, setP] = useState<Progress>()
   const started = useRef(false)
+  useHoldUpdate() // 모델을 받는 동안은 새 버전 적용을 미룬다
   useEffect(() => {
     if (started.current) return
     started.current = true
