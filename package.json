@@ -1,7 +1,7 @@
 {
   "name": "transbee",
   "private": true,
-  "version": "0.3.14",
+  "version": "0.3.15",
   "license": "AGPL-3.0-only",
   "repository": "github:ian-yw/transbee",
   "homepage": "https://transbee.beevelop.ai",
@@ -16,6 +16,7 @@
     "@huggingface/transformers": "^4.3.0",
     "fflate": "^0.8.3",
     "mediabunny": "^1.59.1",
+    "mpg123-decoder": "^1.0.3",
     "onnxruntime-web": "^1.31.0-dev.20260914-8d85527a0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8"

@@ -259,6 +259,9 @@ html { scroll-padding-top: var(--head-h, 200px); scroll-padding-bottom: 80px; }
 .card.state p { color: var(--t2); margin: 6px 0 18px; }
 .card.state p a { color: var(--t); text-underline-offset: 3px; }
 .card.state .btn { margin: 0 8px 8px 0; }
+.err-info { margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--chip); }
+.card.state .err-info p { margin: 0 0 8px; font-size: 13px; }
+.err-info pre { margin: 0 0 8px; padding: 10px 12px; max-height: 160px; overflow: auto; white-space: pre-wrap; word-break: break-all; font-size: 12px; line-height: 1.5; color: var(--t2); background: var(--box); border-radius: 6px; user-select: all; }
 .card.done { text-align: center; }
 .card.done .check { margin: 0 auto 10px; }
 .h { font-family: var(--print); font-size: 21px; font-weight: 700; line-height: 1.35; margin: 0 0 6px; }

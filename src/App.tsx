@@ -1,6 +1,6 @@
 // 화면 흐름: 첫 화면 → (처음 한 번 준비) → 초벌 → 듣고 고치기(상담자 확인·내보내기 포함). 예외는 "이럴 때는" 화면.
 import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
-import { GUIDE_ID } from './app/About'
+import { APP_VERSION, GUIDE_ID } from './app/About'
 import { FORMAT_VERSION, type Transcript } from './types'
 import type { EngineError, Support } from './engine/api'
 import { engine } from './app/engine'
@@ -13,6 +13,7 @@ import { Editor } from './editor/Editor'
 import { askPersist, getAudio, getJobs, putAudio, putJob, type Job } from './storage/db'
 import { BadFileError, mainFileName, unpack } from './storage/file'
 import { getFolder, hasPermission, readFile } from './storage/folder'
+import { fileKind } from './engine/sniff'
 import { acquireJob, releaseJobs } from './storage/lock'
 
 type Screen =
@@ -21,7 +22,7 @@ type Screen =
   | { k: 'prepare'; job: Job; audio: Blob }
   | { k: 'processing'; job: Job; audio: Blob; fresh: boolean }
   | { k: 'editor'; job: Job; audio: Blob }
-  | { k: 'problem'; title: string; desc: ReactNode; action: string; run: () => void }
+  | { k: 'problem'; title: string; desc: ReactNode; action: string; run: () => void; info?: string }
   | { k: 'choose'; title: string; desc: string; a: [string, () => void]; b: [string, () => void] }
 
 const AUDIO_EXT = /\.(m4a|mp3|wav|aac|ogg|oga|flac|webm|mp4)$/i
@@ -44,6 +45,26 @@ function stub(fileName: string, mime: string, title: string): Transcript {
     settings: { silenceMin, silenceFormat },
   }
 }
+
+const BAD_FILE = 'm4a, mp3, wav 녹음 파일이나 transbee 작업 파일만 열 수 있어요. 영상 파일이라면 녹음 앱에서 소리 파일로 내보내 주세요.'
+const BAD_KIND = {
+  wma: 'WMA 형식 녹음이라 브라우저에서 열 수 없어요. 녹음기 프로그램에서 mp3로 내보낸 뒤 다시 놓아 주세요.',
+  adpcm: '녹음기 전용 압축(ADPCM) 방식의 WAV라 브라우저에서 열 수 없어요. 녹음기 프로그램에서 mp3로 내보낸 뒤 다시 놓아 주세요.',
+}
+
+/** 문의용 오류 정보. 파일 이름은 넣지 않는다(내담자 이름이 들어 있을 수 있다). 앞 16바이트는 형식 확인용 */
+async function errorInfo(error: string, file?: Blob, fileName?: string): Promise<string> {
+  const lines = [`transbee ${APP_VERSION}`, `오류: ${error.split('\n')[0].slice(0, 300)}`]
+  if (file) {
+    const head = await file.slice(0, 16).arrayBuffer().then((b) => [...new Uint8Array(b)].map((x) => x.toString(16).padStart(2, '0')).join(' '), () => '읽지 못함')
+    const ext = fileName?.match(/\.[^.]+$/)?.[0] ?? '확장자 없음'
+    lines.push(`파일: ${ext} · ${file.type || '종류 없음'} · ${(file.size / 1024 ** 2).toFixed(1)}MB · 앞부분 ${head}`)
+  }
+  lines.push(`브라우저: ${navigator.userAgent}`, `시각: ${new Date().toISOString()}`)
+  return lines.join('\n')
+}
+
+const kindOf = (file: Blob) => file.slice(0, 4096).arrayBuffer().then((b) => fileKind(new Uint8Array(b)), () => undefined)
 
 export default function App() {
   const [s, setS] = useState<Screen>({ k: 'loading' })
@@ -90,18 +111,19 @@ export default function App() {
   }, [check, unsupported])
 
   const engineProblem = useCallback(
-    (e: EngineError, job: Job, audio: Blob) => {
+    async (e: EngineError, job: Job, audio: Blob) => {
       const again = () => run(job, audio)
-      if (e.code === 'bad-file')
-        return setS({ k: 'problem', title: '이 파일은 열 수 없어요', desc: 'm4a, mp3, wav 녹음 파일이나 transbee 작업 파일만 열 수 있어요. 영상 파일이라면 녹음 앱에서 소리 파일로 내보내 주세요.', action: '다른 파일 고르기', run: home })
+      if (e.code === 'bad-file') return badFile(`${e.code} · ${e.message}`, audio, job.transcript.audio.fileName)
       if (e.code === 'network')
         return setS({ k: 'problem', title: '인터넷이 끊겨 멈췄어요', desc: 'AI 모델을 받던 중이었어요. 다시 연결되면 받던 곳부터 이어서 받아요.', action: '이어서 받기', run: again })
       if (e.code === 'no-storage')
         return setS({ k: 'problem', title: '저장 공간이 부족해요', desc: '다운로드 폴더 등에서 쓰지 않는 파일을 지운 뒤 다시 눌러 주세요.', action: '다시 확인하기', run: again })
       if (e.code === 'unsupported-browser') return unsupported()
       const until = job.transcript.processing.processedUntil
+      const info = await errorInfo(`${e.code} · ${e.message}`, audio, job.transcript.audio.fileName)
       setS({
         k: 'problem',
+        info,
         title: until > 0 ? `${durText(until)}까지 받아 적어 두었어요` : '받아 적다가 멈췄어요',
         desc: e.code === 'out-of-memory' ? '컴퓨터 메모리가 모자라 멈췄어요. 다른 창과 프로그램을 닫고 이어서 해 주세요. 받아 적은 부분은 그대로 있어요.' : '창이 닫히거나 컴퓨터가 잠들어서 멈췄어요. 받아 적은 부분은 그대로 있어요.',
         action: '이어서 받아 적기',
@@ -160,8 +182,11 @@ export default function App() {
       .finally(() => (starting.current = false))
   }
 
-  const badFile = () =>
-    setS({ k: 'problem', title: '이 파일은 열 수 없어요', desc: 'm4a, mp3, wav 녹음 파일이나 transbee 작업 파일만 열 수 있어요. 영상 파일이라면 녹음 앱에서 소리 파일로 내보내 주세요.', action: '다른 파일 고르기', run: home })
+  async function badFile(error: string, file?: Blob, fileName?: string) {
+    const kind = file && (await kindOf(file))
+    const info = await errorInfo(error, file, fileName)
+    setS({ k: 'problem', title: '이 파일은 열 수 없어요', desc: kind ? BAD_KIND[kind] : BAD_FILE, action: '다른 파일 고르기', run: home, info })
+  }
 
   async function startAudio(file: Blob, fileName: string, title: string) {
     const transcript = stub(fileName, file.type || 'audio/mp4', title)
@@ -177,7 +202,7 @@ export default function App() {
     try {
       x = await unpack(new Uint8Array(await file.arrayBuffer()))
     } catch (e) {
-      if (e instanceof BadFileError) return badFile()
+      if (e instanceof BadFileError) return badFile(`bad-work-file · ${e.message}`, file, file.name)
       throw e // once()가 저장 공간 안내로
     }
     const jobs = await getJobs()
@@ -210,7 +235,7 @@ export default function App() {
 
   function onFile(f: File) {
     if (/\.transbee$/i.test(f.name)) return once(() => openWorkFile(f))
-    if (!f.type.startsWith('audio/') && !AUDIO_EXT.test(f.name)) return badFile()
+    if (!f.type.startsWith('audio/') && !AUDIO_EXT.test(f.name)) return badFile('not-audio', f, f.name)
     once(() => startAudio(f, f.name, f.name.replace(/\.[^.]+$/, '')))
   }
 
@@ -318,7 +343,7 @@ export default function App() {
           <header className="topbar">
             <Logo onClick={home} />
           </header>
-          <Problem title={s.title} desc={s.desc} action={s.action} onAction={s.run} onHome={support?.ok === false && support.reason === 'not-chromium' ? undefined : home} />
+          <Problem title={s.title} desc={s.desc} info={s.info} action={s.action} onAction={s.run} onHome={support?.ok === false && support.reason === 'not-chromium' ? undefined : home} />
         </div>
       )
     case 'choose':

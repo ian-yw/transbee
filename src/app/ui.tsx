@@ -1,6 +1,7 @@
 // 여러 화면에서 쓰는 작은 부품: 로고, 응원 쪽지, "이럴 때는" 틀, 시간 표기
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { setSettings, useSettings, type Settings } from './settings'
+import { KAKAO_URL } from './Legal'
 
 export function Logo({ onClick }: { onClick?: () => void }) {
   const inner = (
@@ -43,7 +44,7 @@ export function ThemeButton() {
 }
 
 export const ByBeevelop = () => (
-  <a className="by" href="https://beevelop.ai/ko" target="_blank" rel="noopener noreferrer">
+  <a className="by" href="https://beevelop.ai/ko?utm_source=transbee" target="_blank" rel="noopener noreferrer">
     by Beevelop상담교육센터
   </a>
 )
@@ -125,8 +126,9 @@ export function UpdateNote() {
 }
 
 /** "이럴 때는" 화면: 제목 한 줄 + 설명 한 줄 + 버튼 하나 */
-export function Problem(p: { title: string; desc: ReactNode; action: string; onAction: () => void; onHome?: () => void }) {
+export function Problem(p: { title: string; desc: ReactNode; info?: string; action: string; onAction: () => void; onHome?: () => void }) {
   const h = useRef<HTMLHeadingElement>(null)
+  const [copied, setCopied] = useState(false)
   useEffect(() => h.current?.focus(), [])
   return (
     <main className="center">
@@ -142,6 +144,18 @@ export function Problem(p: { title: string; desc: ReactNode; action: string; onA
           <button type="button" className="btn quiet" onClick={p.onHome}>
             첫 화면으로
           </button>
+        )}
+        {p.info && (
+          <div className="err-info">
+            <p>오류정보를 남기고 개발자에게 문의하려 하실 경우 이 내용을 복사해서 보내주세요!</p>
+            <pre>{p.info}</pre>
+            <button type="button" className="btn quiet sm" onClick={() => navigator.clipboard.writeText(p.info!).then(() => setCopied(true), () => {})}>
+              {copied ? '복사했어요' : '오류 정보 복사하기'}
+            </button>
+            <a className="btn quiet sm" href={KAKAO_URL} target="_blank" rel="noopener noreferrer">
+              카카오톡으로 문의하기
+            </a>
+          </div>
         )}
       </section>
     </main>

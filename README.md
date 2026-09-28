@@ -46,6 +46,7 @@ transbee는 서버에서 돌아가는 서비스가 아닙니다. 사이트는 �
 | transformers.js PR #1778 이식 코드 (`src/engine/nemotron/`) | Nemotron 화자분리 전처리·화자 캐시 | Apache-2.0 (Copyright Hugging Face, 전문 `src/engine/nemotron/LICENSE`) |
 | [ONNX Runtime Web](https://github.com/microsoft/onnxruntime) (`onnxruntime-web`) | 모델 실행(WebGPU·WASM) | MIT |
 | [Mediabunny](https://github.com/Vanilagy/mediabunny) | 녹음 파일 풀기 | MPL-2.0 |
+| [mpg123-decoder](https://github.com/eshaz/wasm-audio-decoders) ([mpg123](https://www.mpg123.de/) 기반) | Chrome이 풀지 못하는 mp3 풀기 | MIT (mpg123 본체는 LGPL-2.1) |
 | [fflate](https://github.com/101arrowz/fflate) | 작업 파일·hwpx·xlsx·docx 묶기 | MIT |
 | [React](https://react.dev) | 화면 | MIT |
 | IBM Plex Sans KR, Gowun Batang, Gaegu, Nanum Pen Script, Noto Sans KR (Google Fonts, `public/fonts/`) | 글꼴 | SIL Open Font License 1.1 (저작권 고지·전문 `public/fonts/LICENSE.txt`) |

@@ -77,10 +77,28 @@ export function usePlayback(audio: Blob, getUtts: () => Utterance[], on: { index
   cb.current = on
 
   useEffect(() => {
-    const url = URL.createObjectURL(audio)
+    let url = URL.createObjectURL(audio)
+    let alive = true, tried = false
     el.src = url
     el.preload = 'auto'
+    // Chrome이 못 푸는 mp3(녹음기 mp3 등)는 mpg123으로 풀어 재생용 WAV로 바꿔 튼다. 원본 녹음은 그대로 둔다.
+    const onError = async () => {
+      if (tried || !el.error || el.error.code < MediaError.MEDIA_ERR_DECODE) return
+      tried = true
+      const at = el.currentTime
+      const m = await import('../engine/mp3')
+      if (!(await m.looksMp3(audio))) return
+      const wav = m.wav16(await m.decodeMp3(audio))
+      if (!alive) return
+      URL.revokeObjectURL(url)
+      url = URL.createObjectURL(wav)
+      el.src = url
+      if (at) el.addEventListener('loadedmetadata', () => (el.currentTime = at), { once: true })
+    }
+    el.addEventListener('error', onError)
     return () => {
+      alive = false
+      el.removeEventListener('error', onError)
       el.pause()
       URL.revokeObjectURL(url)
     }

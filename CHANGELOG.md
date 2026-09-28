@@ -5,5 +5,11 @@ transbee의 버전은 `package.json`의 `version`이 기준이다(화면의 "tra
 - 모델을 바꿀 때는 `src/engine/models.ts`의 모델 이름·revision·파일 크기와 `MODEL_INFO`를 고치고, 버전을 올린다. 사용자는 다음 받아 적기 때 새 파일을 한 번 받고 예전 파일은 지워진다.
 - 번호: 큰 변화(작업 파일 형식 `FORMAT_VERSION`이 바뀜) · 기능 · 고침.
 
+## 0.3.15 — 2026-09-28
+- Chrome(153, Symphonia)이 거부하는 mp3를 mpg123-decoder로 디코딩 — 받아 적기·재생 둘 다. ZOOM H1n 녹음기 mp3, 앞에 비음성 데이터가 붙은 mp3, WAV 안 mp3
+- WMA·ADPCM WAV 판별 → mp3로 내보내기 안내
+- beevelop link에 utm_source 추가 (이용자 정보 불포함)
+- 파일 열기 실패·받아 적기 중단 화면에 문의용 오류 정보 + 복사 버튼 + 카카오톡 문의 링크 (파일 이름 제외)
+
 ## 0.3.14 — 2026-09-26
 - 공개 첫 버전.

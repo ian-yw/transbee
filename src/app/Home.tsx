@@ -226,7 +226,7 @@ export function Home({ onFile, onOpen, downloadBytes }: { onFile: (f: File) => v
         <p className="foot-links">
           <span>
             © {new Date().getFullYear()}{' '}
-            <a href="https://beevelop.ai/ko" target="_blank" rel="noopener noreferrer">
+            <a href="https://beevelop.ai/ko?utm_source=transbee" target="_blank" rel="noopener noreferrer">
               Beevelop
             </a>
           </span>

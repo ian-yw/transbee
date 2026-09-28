@@ -80,7 +80,7 @@ export function SiteInfo({ onDoc }: { onDoc: (d: LegalDoc) => void }) {
               </button>
             </li>
             <li>
-              <a href="https://beevelop.ai/ko/courses" target="_blank" rel="noopener noreferrer">
+              <a href="https://beevelop.ai/ko/courses?utm_source=transbee" target="_blank" rel="noopener noreferrer">
                 Beevelop상담교육센터
               </a>
             </li>
